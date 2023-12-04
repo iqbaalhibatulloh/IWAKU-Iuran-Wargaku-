@@ -88,7 +88,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dokumen')" :active="request()->routeIs('dokumen')">
+            <x-responsive-nav-link :href="route('document.doc')" :active="request()->routeIs('document')">
                 {{ __('Dokumen') }}
             </x-responsive-nav-link>
         </div>
