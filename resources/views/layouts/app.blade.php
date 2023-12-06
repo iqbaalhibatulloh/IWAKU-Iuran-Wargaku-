@@ -31,13 +31,13 @@
             <!-- Page Content -->
             <main>
                 <div class="grid grid-cols-4 p-20 gap-20 text-white text-3xl">
-                    @if(!\Route::is('profile.edit'))
+                    @if(!\Route::is('profile.edit', 'payment.detailPayment'))
                     <div class="bg-[#8D7B68] max-h-max h-64 text-xl rounded-xl">
                         @include('components.side-bar')
                         {{-- navbar --}}
                     </div>
                     @endif
-                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit') ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
+                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit', 'payment.detailPayment') ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
                         @yield('content')
                     </div>
                    </div>

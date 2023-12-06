@@ -37,8 +37,11 @@ Route::get('/dokumen', function () {
     return view('dokumen');
 })->middleware(['auth', 'verified'])->name('document.doc');
 Route::get('/payment', function () {
-    return view('payment');
+    return view('payment.payment');
 })->middleware(['auth', 'verified'])->name('payment');
+Route::get('/detailPayment', function () {
+    return view('payment.detailPayment');
+})->middleware(['auth', 'verified'])->name('payment.detailPayment');
 Route::get('/detailDoc', function () {
     return view('document.detailDoc');
 })->middleware(['auth', 'verified'])->name('document.detailDoc');
