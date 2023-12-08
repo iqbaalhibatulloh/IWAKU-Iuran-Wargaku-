@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Warga;
 use App\Http\Requests\StoreWargaRequest;
 use App\Http\Requests\UpdateWargaRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class WargaController extends Controller
 {
@@ -29,8 +31,21 @@ class WargaController extends Controller
      */
     public function store(StoreWargaRequest $request)
     {
-      
-        dd($request->all());
+        DB::beginTransaction();
+        try {
+            $wargaAdd = new Warga();
+            $wargaAdd->id = $request->id;
+            $wargaAdd->nama = $request->nama;
+            $wargaAdd->alamat = $request->alamat;
+            $wargaAdd->status = $request->status;
+            $wargaAdd->save();
+            
+            DB::commit();
+            return redirect()->back();
+        } catch(\Exception $e){
+            DB::rollBack();
+            dd($e);
+        }
     }
 
     /**

@@ -31,25 +31,30 @@
             <!-- Page Content -->
             <main>
                 <div class="grid grid-cols-4 p-20 gap-20 text-white text-3xl">
-                    @if(!\Route::is('profile.edit', 'payment.detailPayment'))
+                    @if(!\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList'))
                     <div class="bg-[#8D7B68] max-h-max h-64 text-xl rounded-xl">
                         @include('components.side-bar')
                         {{-- navbar --}}
+                        
                     </div>
+
                     @endif
-                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit', 'payment.detailPayment') ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
+                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList') ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
                         @yield('content')
                     </div>
+                    
                    </div>
             </main>
+            @include('layouts.footer')
         </div>
         <script src="https://code.jquery.com/jquery-3.7.0.js "></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
-            new DataTable('#example');
-            new DataTable('#examplee');
-            new DataTable('#exampleee');
-            new DataTable('#exampleeee');
+            new DataTable('#example1');
+            new DataTable('#example2');
+            new DataTable('#example3');
+            new DataTable('#example4');
+          
         </script>
     </body>
 </html>

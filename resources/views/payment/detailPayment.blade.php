@@ -7,7 +7,7 @@
    Iuran Sampah : Iqbaal 
   {{-- {{$wargas->first()->alamat}} --}}
 </div>
-<div class=" flex col-span-3 relative"> 
+<div class=" flex col-span-3 relative mx-5"> 
   
     <div class="w-full shadow-2xl rounded-xl bg-[#4C3B2A] m-1 py-2 justify-center">
         <p class="text-center">Januari</p>
@@ -28,7 +28,7 @@
         </div>
     </div>
 </div>
-<div class=" flex col-span-3 relative"> 
+<div class=" flex col-span-3 relative mx-5"> 
     <div class="w-full shadow-2xl rounded-xl bg-[#4C3B2A] m-1 py-2 justify-center">
         <p class="text-center">April</p>
         <div class="text-center flex justify-center items-center w-full">
@@ -48,7 +48,7 @@
         </div>
     </div>
 </div>
-<div class=" flex col-span-3 relative"> 
+<div class=" flex col-span-3 relative mx-5"> 
     <div class="w-full shadow-2xl rounded-xl bg-[#4C3B2A] m-1 py-2 justify-center">
         <p class="text-center">Juli</p>
         <div class="text-center flex justify-center items-center w-full">
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-<div class=" flex col-span-3 relative"> 
+<div class=" flex col-span-3 relative mx-5 mb-7"> 
     <div class="w-full shadow-2xl rounded-xl bg-[#4C3B2A] m-1 py-2 justify-center">
         <p class="text-center">Oktober</p>
         <div class="text-center flex justify-center items-center w-full">

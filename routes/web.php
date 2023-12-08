@@ -33,12 +33,18 @@ Route::get('/home', function () {
 Route::get('/memberList', function () {
     return view('memberList.memberList');
 })->middleware(['auth', 'verified'])->name('memberList.index');
+Route::get('/edit', function () {
+    return view('memberList.editMemberList');
+})->middleware(['auth', 'verified'])->name('memberList.editMemberList');
 Route::get('/dokumen', function () {
     return view('dokumen');
 })->middleware(['auth', 'verified'])->name('document.doc');
 Route::get('/payment', function () {
     return view('payment.payment');
 })->middleware(['auth', 'verified'])->name('payment');
+Route::get('/opsiPayment', function () {
+    return view('payment.opsiPayment');
+})->middleware(['auth', 'verified'])->name('payment.opsiPayment');
 Route::get('/detailPayment', function () {
     return view('payment.detailPayment');
 })->middleware(['auth', 'verified'])->name('payment.detailPayment');
