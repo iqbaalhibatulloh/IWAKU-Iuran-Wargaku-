@@ -32,12 +32,34 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'noTelp' => ['required', 'string'],
+            'role' => ['required', 'string'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $role = $request['role'];
+
+        $currentDate = date('d');
+        $prefix = '';
+        if (strpos($role, 'RT') === 0) {
+            $prefix = 'IWKRT';
+        } elseif (strpos($role, 'RW') === 0) {
+            $prefix = 'IWKRW';
+        } elseif ($role === 'admin') {
+            $prefix = 'IWkAD';
+        } else {
+            $prefix = 'IWkW'; // Default prefix jika tidak sesuai dengan kondisi di atas
+        }
+
+
+        $userId = $prefix . substr($request['name'], 0, 2) . $currentDate . User::count() + 1;
+
         $user = User::create([
+            'id'=>$userId,
             'name' => $request->name,
+            'noTelp' => $request->noTelp,
+            'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -47,6 +69,5 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect()->route("home");
-
     }
 }

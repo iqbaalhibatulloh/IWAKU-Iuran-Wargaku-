@@ -21,12 +21,12 @@
     </head>
     <body class="font-sans text-gray-900 antialiased body">
         <div class="min-h-screen flex flex-col bg-[#EDF1D6] sm:justify-center items-center  dark:bg-[#EDF1D6]">
-            <div>
+            {{-- <div>
                 
                 <img class="-mb-20" src="./IwaKu!-black.png" alt="IwaKu!">
-            </div>
+            </div> --}}
 
-            <div class="w-full sm:max-w-md mt-20 px-6 py-4 bg-white dark:bg-white shadow-md overflow-hidden sm:rounded-lg border-2 border-gray-500">
+            <div class="w-full sm:max-w-md  px-6 py-4 bg-white dark:bg-white shadow-md overflow-hidden sm:rounded-lg border-2 border-gray-500">
                 {{ $slot }}
             </div>
         </div>

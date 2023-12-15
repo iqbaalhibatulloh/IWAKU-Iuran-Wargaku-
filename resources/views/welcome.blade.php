@@ -42,7 +42,7 @@
                     <div class="flex justify-center">
                     @auth
                     <button>
-                        <a href="{{ url('/home') }}" class="rounded-sm buttonColor font-semibold text-white hover:text-white-900 dark:text-white-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                        <a href="{{ url('/home') }}" class="rounded-xl px-6 py-6 mr-1 buttonColor text-black hover:text-black dark:text-black dark:hover:text-black focus:outline focus:outline-2 focus:outline-red-500">Home</a>
                     <button>
                     </button>
                         @else

@@ -17,30 +17,33 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        {{-- No-Telp --}}
+        <div class="mt-4">
+            <x-input-label for="noTelp" :value="__('No Telp')" />
+            <x-text-input id="text" class="block mt-1 w-full" type="noTelp" name="noTelp" :value="old('noTelp')" required autocomplete="noTelp" />
+            <x-input-error :messages="$errors->get('noTelp')" class="mt-2" />
         </div>
 
         <!-- Role -->
         <div class="mt-4">
-            <x-input-label for="role" :value="__('Role')" />
-            <div class="relative z-20 w-full rounded border border-stroke h-11 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                <x-text-input class="block mt-1 h-11 w-full" type="" name="" :value="old('')" />
-                <select name="" id="" class="absolute top-0 left-0 z-20 h-11 w-full  opacity-0 ">
-                <option value="2">RT</option>
-                <option value="1">RW</option>
-                <option value="0">Admin</option>
-              </select>
-              
-              <span class="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g opacity="0.8">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="#637381"></path>
-                  </g>
-                </svg>
-              </span>
-            </div>
-          </div>
+            
+            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+            {{-- <x-input-label for="role" :value="__('Role')" /> --}}
+            <select id="role" name="role" class="dark:bg-white dark:text-black focus:border-indigo-500 dark:focus:border-indigo-600  rounded-md w-full shadow-sm border-2 border-gray-500">
+              <option selected disabled>Role</option>
+              <option value="admin">Admin</option>
+              <option value="RW16">RW 16</option>
+              <option value="RT01">RT 01</option>
+              <option value="RT02">RT 02</option>
+              <option value="RT03">RT 03</option>
+              <option value="RT04">RT 04</option>
+              <option value="RT05">RT 05</option>
+          </select>
+        </div>
 
         <!-- Password -->
         <div class="mt-4">

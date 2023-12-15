@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('wargas', function (Blueprint $table) {
             $table->string('id', 20)->primary();
             $table->string('nama', 50);
-            $table->string('alamat', 11);
+            $table->string('rt', 11); 
+            $table->string('rw', 11); 
             $table->string('status', 11);
             $table->timestamps();
         });

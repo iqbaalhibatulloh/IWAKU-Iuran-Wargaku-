@@ -78,6 +78,24 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/profileEdit/{uhuy}',  function ($uhuy) {
+    $type = "";
+    if($uhuy == 'name'){
+        $type = 'text';
+    }else if($uhuy == 'email'){
+        $type = 'email';
+    }else if($uhuy == 'password'){
+        $type = 'password';
+    }else {
+        $type = 'tel';
+    }
+
+    $data = [
+        'name' => $uhuy,
+        'type' => $type
+    ];
+    return view('profile.profileEdit', $data);
+})->middleware(['auth', 'verified'])->name('profile.profileEdit');
 
 Route::resource("/warga", WargaController::class);
 
