@@ -57,6 +57,9 @@ Route::get('/docPemasukan', function () {
 Route::get('/docPengeluaran', function () {
     return view('document.docPengeluaran');
 })->middleware(['auth', 'verified'])->name('document.docPengeluaran');
+Route::get('/detailDocPemasukan', function () {
+    return view('document.detaiDocPemasukan');
+})->middleware(['auth', 'verified'])->name('document.detailDocPemasukan');
 
 // Route::get('/detailDoc', function () {
 //     return view('document.detailDoc');

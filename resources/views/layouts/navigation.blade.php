@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 fixed w-full">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 fixed w-full z-50">
     <!-- Primary Navigation Menu -->
     <div class=" mx-auto px-4 sm:px-6 lg:px-8 bg-[#8D7B68]">
         <div class="flex justify-between h-16 text-white">
@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center text-3xl font-bold w-52 ">
                     <a href="{{ route('home') }}">
-                        <img src="./IwaKuBg.png" alt="">
+                        <img src="{{asset("IwaKuBg.png")}}" alt="">
                     </a>
                 </div>
 

@@ -2,18 +2,16 @@
 
 @section('content')
 <div class="col-span-3 h-max">
-    <div class="mt-7 mx-7 col-span-3 text-center">
+    <div class="mt-5 mx-7 col-span-3 text-center">
         <a class="" href="{{ \route('memberList.index') }}">
             <svg fill="#ffffff" version="1.1" baseProfile="tiny" id="Layer_1" xmlns:x="&amp;ns_extend;" xmlns:i="&amp;ns_ai;" xmlns:graph="&amp;ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" width="30px" height="30px" viewBox="0 0 42 42" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon fill-rule="evenodd" points="31,38.32 13.391,21 31,3.68 28.279,1 8,21.01 28.279,41 "></polygon> </g></svg>
          </a>
         {{$wargas->first()->alamat}}
     </div>
     <div class="col-span-3 shadow-2xl rounded-xl mx-7 bg-[#4C3B2A] mt-10 max-h-96 px-2 overflow-y-auto relative mb-7">
-        <div class=" m-2">
-          
-
+        <div class=" ">
 <!-- Modal toggle -->
-<div class="flex justify-end">
+<div class="flex justify-end mt-3">
 <button type="button" data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 " type="button">
     Tambah Warga
   </button>

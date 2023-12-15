@@ -36,7 +36,7 @@
     </div>
     <h1 class="text-right mr-7">
 <a href="detailDoc">
-      <button class="rounded bg-[#4C3B2A] p-1 text-xl ">
+      <button class="rounded bg-[#4C3B2A] p-1 mb-3 text-xl ">
         Detail
       </button>
     </a>

@@ -13,17 +13,20 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            body{
+                background-color: #EDF1D6;
+            }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-900 dark:bg-gray-900">
+    <body class="font-sans text-gray-900 antialiased body">
+        <div class="min-h-screen flex flex-col bg-[#EDF1D6] sm:justify-center items-center  dark:bg-[#EDF1D6]">
             <div>
-                {{-- <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a> --}}
-                <img class="-mb-20" src="./IwaKuBg.png" alt="">
+                
+                <img class="-mb-20" src="./IwaKu!-black.png" alt="IwaKu!">
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-20 px-6 py-4 bg-white dark:bg-white shadow-md overflow-hidden sm:rounded-lg border-2 border-gray-500">
                 {{ $slot }}
             </div>
         </div>
