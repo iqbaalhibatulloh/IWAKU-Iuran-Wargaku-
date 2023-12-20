@@ -27,7 +27,7 @@
         </div>
 
         <div class="mt-3 text-center">
-            Don't have an accoint? <a href="" class="underline">Register</a>
+            Don't have an accoint? <a href="{{route('register')}}" class="underline">Register</a>
             <h1>OR</h1>
         </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
 use App\Models\Warga;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,11 +32,28 @@ Route::get('/home', function () {
 //     return view('payment', compact("models"));
 // })->middleware(['auth', 'verified'])->name('payment');
 Route::get('/memberList', function () {
-    return view('memberList.memberList');
+    $rtTotals = [];
+
+    for ($i = 1; $i <= 5; $i++) {
+        $rt = 'RT0' . $i;
+        $totalWarga = Warga::where('rt', $rt)->where('rw',auth()->user()->role) ->count();
+        $rtTotals[$rt] = $totalWarga;
+    };
+// dd($rtTotals);
+
+
+    return view('memberList.memberList', compact("rtTotals"));
 })->middleware(['auth', 'verified'])->name('memberList.index');
-Route::get('/edit', function () {
-    return view('memberList.editMemberList');
+
+Route::get('/edit/{warga}', function (Warga $warga) {
+    // $warga = Warga::findOrFail($warga->id); 
+    return view('memberList.editMemberList', compact("warga")) ;
 })->middleware(['auth', 'verified'])->name('memberList.editMemberList');
+Route::POST('/update', [WargaController::class,"update"] 
+)->middleware(['auth', 'verified'])->name('memberList.update');
+
+
+
 Route::get('/dokumen', function () {
     return view('dokumen');
 })->middleware(['auth', 'verified'])->name('document.doc');
@@ -68,7 +86,9 @@ Route::get('/detailDocPemasukan', function () {
 // Route::get('/memberlist/rt/{warga:alamat}', [WargaController::class, 'show'])->name("warga.show");
 // Route::get('/memberlist/{rt}/rt', [WargaController::class, 'show'])->name("warga.show.byrt");
 Route::get('/memberlist/{rt}/rt', function(string $rt){
-    $wargas = Warga::where('alamat', $rt)->get();
+    $wargas = Warga::where('rt', $rt)->where("rw", auth()->user()->role)->get();
+ 
+// return $rtTotals;
 
     return view("memberList.detailMemberList", compact("wargas"));
 })->name("memberList.show.byrt");

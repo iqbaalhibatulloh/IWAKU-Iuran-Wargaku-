@@ -69,7 +69,7 @@
         </div>
 
         <div class="mt-3 text-center">
-            Already have an account ? <a href="" class="underline">Log In</a>
+            Already have an account ? <a href="{{ route('login') }}" class="underline">Log In</a>
             <h1>OR</h1>
         </div>
 

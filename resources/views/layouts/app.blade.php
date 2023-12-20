@@ -81,12 +81,12 @@
 
             <!-- Page Content -->
             <main>
-                <div class="grid grid-cols-4  p-20  gap-x-20 text-white text-2xl">
-                    @if(!\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan'))
+                <div class="grid grid-cols-4 p-20 gap-x-20 text-white text-2xl">
+                    @if(!\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan', 'profile.profileEdit'))
                     <div class="bg-[#8D7B68] max-h-max h-64 text-lg rounded-xl">
                         @include('components.side-bar')
 
-                        <div class="bg-[#8D7B68] max-h-max h-80 rounded-xl grid-rows text-black text-lg mt-10 ">
+                        <div class="bg-[#8D7B68] max-h-max h-[360px] rounded-xl grid-rows text-black text-lg mt-10 ">
                             <div class="">
                                 @include('components.sidePage')
                             </div>
@@ -95,7 +95,7 @@
                     
 
                     @endif
-                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan' ) ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
+                    <div class="bg-[#8D7B68] {{ !\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan','profile.profileEdit' ) ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
                         @yield('content')
                     </div>
                     

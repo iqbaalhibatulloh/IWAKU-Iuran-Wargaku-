@@ -38,14 +38,27 @@
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                            <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nama" required="">
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nama" required="">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
-                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                            <select name="alamat" id="category" name="alamat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                              <option selected disabled>Alamat</option>
+                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RT</label>
+                            <select name="rt" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                              <option selected disabled>RT</option>
                             @for ($i = 1 ; $i <= 5; $i++)
                             <option value="RT0{{$i}}">RT 0{{$i}}</option>
+                            @endfor
+                          </select>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RW</label>
+                            <select name="rw" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                              <option selected disabled>RW</option>
+                            @for ($i = 1 ; $i <= 21; $i++)
+                            @if ($i >9)
+                            <option value="RW{{$i}}">RW {{$i}}</option>
+                              @else
+                              <option value="RW0{{$i}}">RW 0{{$i}}</option>
+                            @endif
                             @endfor
                           </select>
                         </div>
@@ -74,7 +87,7 @@
   <a href="{{route('memberList.show.byrt', "RT0" . $i)}}" class="block col-span-3 shadow-2xl rounded-xl mb-5 mx-7 bg-[#4C3B2A] text-center py-10">
       <button>
         <h2>RT0{{$i}}</h2>
-        <h5 class="text-sm">Total warga: 50</h5>
+        <h5 class="text-sm">Total warga: {{$rtTotals["RT0$i"]}}</h5>
       </button>    
   </a>
   @endfor

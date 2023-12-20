@@ -31,18 +31,21 @@ class WargaController extends Controller
      */
     public function store(StoreWargaRequest $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $wargaAdd = new Warga();
             $wargaAdd->id = $request->id;
-            $wargaAdd->nama = $request->nama;
-            $wargaAdd->alamat = $request->alamat;
+            $wargaAdd->name = $request->name;
+            $wargaAdd->rt = $request->rt;
+            $wargaAdd->rw = $request->rw;
             $wargaAdd->status = $request->status;
             $wargaAdd->save();
             
             DB::commit();
             return redirect()->back();
         } catch(\Exception $e){
+            dd($e);
             DB::rollBack();
             dd($e);
         }
@@ -67,9 +70,24 @@ class WargaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWargaRequest $request, Warga $warga)
+    public function update(UpdateWargaRequest $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'rt' => 'required|string',
+            'rw' => 'required|string',
+            'status' => 'required|string',
+        ]);
+
+        // Update the Warga data
+        $warga = Warga::find($request->id); // Assuming the user is authenticated
+        $warga->name = $request->input('name');
+        $warga->rt = $request->input('rt');
+        $warga->rw = $request->input('rw');
+        $warga->status = $request->input('status');
+        $warga->save();
+
+        return redirect()->back();
     }
 
     /**

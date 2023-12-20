@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,17 +34,22 @@ class ProfileController extends Controller
         // if ($request->user()->isDirty('email')) {
         //     $request->user()->email_verified_at = null;
         // }
-;
-       
+        //   dd($request->all(),  key($request->all()),  $request->$uhuy); 
 
-if (key($request->all()) == 'password') {
-    $request->user()->update([
-        key($request->all()) ==  Hash::make($request->name)
-    ]);
-}else{
-    $request->user()->update([
-        key($request->all()) == $request->name
-    ]);
+     $uhuy = key($request->all());
+    
+try{
+    if ($uhuy == 'password') {
+        $request->user()->update([
+            $uhuy =>  Hash::make($request->$uhuy)
+        ]);
+    }else{
+        $request->user()->update([
+            $uhuy => $request->$uhuy
+        ]);
+    }
+} catch(Exception $e){
+    dd($e);
 }
 
 
