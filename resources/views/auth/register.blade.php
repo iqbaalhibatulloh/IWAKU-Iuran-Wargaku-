@@ -75,7 +75,7 @@
 
         {{-- white goggle --}}
         <div class="mt-3"> 
-           
+            <a href="{{ URL::to("googleLogin") }}">
             <x-primary-button class="w-full h-10  justify-center">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg " class="pr-2">
                     <g clip-path="url(#clip0_50_914)">
@@ -92,6 +92,7 @@
                     </svg>
                Continue white google
             </x-primary-button>
+            </a>
         </div>
 
         <div class="flex items-center justify-end mt-4">

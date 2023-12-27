@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
 use App\Models\Warga;
@@ -20,6 +21,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('googleLogin', [LoginController::class, 'redirectToGoogle'])->name('googleLogin');
+Route::get('/auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
+
+// choose role after sign up by google
+Route::get("/chooseRole/google", function(){
+    return view("chooseRole");
+})->name("chooseRole");
+// update role after sign up by google
+Route::put('/updateRole', [LoginController::class, 'updateRole'])->name('updateRole');
 
 Route::get('/home', function () {
     return view('home');
