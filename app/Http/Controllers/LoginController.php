@@ -51,7 +51,7 @@ class LoginController extends Controller
     {                
       try{
         $user = User::findOrFail(Auth::user()->id);        
-        $role = $request->role;
+        $role = $request->role;        
         $currentDate = date('d');
         $prefix = '';
         if (strpos($role, 'RT') === 0) {
@@ -66,6 +66,7 @@ class LoginController extends Controller
         $userId = $prefix . substr($request['name'], 0, 2) . $currentDate . User::count() + 1;
         $user->id = $userId;
         $user->role = $role;
+        $user->noTelp = $request->noTelp;
         $user->save();
         Auth::login($user);
         return redirect('home')->with('success', 'Selamat datang kembali ' . $user->name);
@@ -73,16 +74,7 @@ class LoginController extends Controller
         dd($e);        
         return redirect()->route('chooseRole')->with('error2', 'Pemilihan role gagal, mohon pilih role ulang');
       }
-    }
-
-    // public function handleGoogleSignUpCallback(){
-    //     try {
-    //         $user = Socialite::driver('google')->stateless()->user();        
-    //         dd($user);
-    //     } catch(\Exception $e) {
-            
-    //     }
-    // }
+    }    
 
 }
 
