@@ -3,7 +3,10 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
+use App\Models\Payment;
 use App\Models\Warga;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -68,21 +71,93 @@ Route::POST('/update', [WargaController::class,"update"]
 Route::get('/dokumen', function () {
     return view('dokumen');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.doc');
-Route::get('/payment', function () {
-    // check if is RW or RT how because my value is RT02 RT01 RW01 RW02
-    $wargas = Warga::where('rw', auth()->user()->role)->get();
+Route::get('/payment', function () {    
 
-    if(auth()->user()->rw != ""){        
-        $wargas = Warga::where('rw', auth()->user()->rw)->where('role', auth()->user()->role)->get();
-    }
-    return view('payment.payment', $wargas);
+$year = Carbon::now()->year;
+
+// Get users who have made payments for all twelve months
+$usersWithFullPayments = Payment::whereHas('warga', function ($query) {
+        if (Auth::user()->rw == "") {
+            $query->where('rw', Auth::user()->role);
+        } else {
+            $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+        }
+    })
+    ->whereYear('payment_date', $year)
+    ->get()
+    ->groupBy('warga_id')
+    ->filter(function ($payments) {     
+        $currentMonthNumber = Carbon::now()->format('n'); 
+        
+        // return $payments->count() >= $currentMonthNumber;
+        return $payments->count() >= 2;
+    })->keys(); 
+
+// Get all users
+$allUsers = Warga::where(function ($query) {
+        if (Auth::user()->rw == "") {
+            $query->where('rw', Auth::user()->role);
+        } else {
+            $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+        }
+    })
+    ->pluck('id');
+
+// Get users who haven't made payments for all twelve months
+$usersWithoutFullPayments = $allUsers->diff($usersWithFullPayments);
+
+// Retrieve the wargas who haven't made payments for all twelve months
+$wargas = Warga::whereIn('id', $usersWithoutFullPayments)->get();
+
+
+    
+    return view('payment.payment', compact("wargas"));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment');
 Route::get('/opsiPayment', function () {
-    return view('payment.opsiPayment');
+    return view('payment.opsiPayment');    
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.opsiPayment');
 Route::get('/detailPayment', function () {
     return view('payment.detailPayment');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.detailPayment');
+Route::get('/detailPayment/{warga}/{category}', function (Warga $warga, $category) {
+    // dd($warga, $category);
+    $year = Carbon::now()->year;
+
+    // Fetch payment status for each month in the current year
+    // change to object
+    $paymentStatus = [];
+    for ($month = 1; $month <= 12; $month++) {
+        $categoryId = DB::table('categories')->where('name', $category)->value('id');
+        
+        $monthNamesId = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        $paymentStatus["status"][] = Payment::where('warga_id', $warga->id)
+            ->where('category_id', $categoryId)
+            ->whereYear('payment_date', $year)
+            ->whereMonth('payment_date', $month)
+            ->exists() ? 1 : 0;
+
+            $paymentStatus["month"][] = $monthNamesId[$month];
+    }    
+
+    // dd($paymentStatus);
+    
+
+    return view('payment.detailPayment', compact('warga', 'category', 'paymentStatus'));
+})->middleware(['auth', 'verified', 'completeRegister'])->name('payment.detailPayment.warga');
 Route::get('/detailDoc', function () {
     return view('document.detailDoc');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.detailDoc');
@@ -103,11 +178,9 @@ Route::get('/detailDocPemasukan', function () {
 // Route::get('/memberlist/rt/{warga:alamat}', [WargaController::class, 'show'])->name("warga.show");
 // Route::get('/memberlist/{rt}/rt', [WargaController::class, 'show'])->name("warga.show.byrt");
 Route::get('/memberlist/{rt}/rt', function(string $rt){
-    $wargas = Warga::where('rt', $rt)->where("rw", auth()->user()->role)->get();
- 
+    $wargas = Warga::where('rt', $rt)->where("rw", auth()->user()->role)->get(); 
 // return $rtTotals;
-
-    return view("memberList.detailMemberList", compact("wargas"));
+    return view("memberList.detailMemberList", compact("wargas", "rt"));
 })->name("memberList.show.byrt");
 
 Route::middleware(['auth', 'completeRegister'])->group(function () {

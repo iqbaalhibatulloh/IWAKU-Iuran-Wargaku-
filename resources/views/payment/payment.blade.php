@@ -25,25 +25,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse ($wargas as $item)
                     <tr>
-                        @forelse ($wargas as $item)
-                            @if($item)
+                          @if($item->category->name ?? "bulanan" == "bulanan")
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{$item->rt . " , " . $item->rw }}</td>
+                            <td>{{$item->status}}</td>
+                            <td class="flex gap-3 justify-center">
+                                <a href="{{ route("payment.detailPayment.warga", ["warga" => $item, "category" => $item->category->name ?? "bulanan"]) }}">
+                                <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
+                                Bayar
+                                </button>
+                            </a>
+                            </td>
+                        </tr>
+                          @endif
                         @empty
-                        
-                        @endforelse
-                        <td></td>
-                        <td>System Architect</td>
-                        <td>Iqbaal Hibatulloh</td>
-                        <td>RT05</td>
-                        <td>2011-04-25</td>
-                        <td class="flex gap-3 justify-center">
-                            <a href="opsiPayment">
-                            <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
-                            Bayar
-                            </button>
-                        </a>
-                        </td>
-                    </tr>
+                                                    
+                        @endforelse                                                                       
                 </tbody>
             </table>
         </div>
@@ -66,20 +67,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>010101</td>
-                    <td>Iqbaal Hibatulloh</td>
-                    <td>RT05</td>
-                    <td>Menetap</td>
-                    <td class="flex gap-3 justify-center">
-                        <a href="opsiPayment">
-                        <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
-                        Bayar
-                        </button>
-                    </a>
-                    </td>
-                </tr>
+                @forelse ($wargas as $item)
+                    <tr>
+                          @if($item->category->name ?? "ronda" == "ronda")
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{$item->rt . " , " . $item->rw }}</td>
+                            <td>{{$item->status}}</td>
+                            <td class="flex gap-3 justify-center">
+                                <a href="{{ route("payment.detailPayment.warga", ["warga" => $item, "category" => $item->category->name ?? "ronda"]) }}">
+                                <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
+                                Bayar
+                                </button>
+                            </a>
+                            </td>
+                        </tr>
+                          @endif
+                        @empty
+                                                    
+                        @endforelse                
             </tbody>
         </table>
     </div>
@@ -102,20 +109,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>010101</td>
-                    <td>Iqbaal Hibatulloh</td>
-                    <td>RT05</td>
-                    <td>Menetap</td>
-                    <td class="flex gap-3 justify-center">
-                        <a href="opsiPayment">
-                        <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
-                        Bayar
-                        </button>
-                    </a>
-                    </td>
-                </tr>
+                @forelse ($wargas as $item)
+                    <tr>
+                          @if($item->category->name ?? "sampah" == "sampah")
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{$item->rt . " , " . $item->rw }}</td>
+                            <td>{{$item->status}}</td>
+                            <td class="flex gap-3 justify-center">
+                                <a href="{{ route("payment.detailPayment.warga", ["warga" => $item, "category" => $item->category->name ?? "sampah"]) }}">
+                                <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
+                                Bayar
+                                </button>
+                            </a>
+                            </td>
+                        </tr>
+                          @endif
+                        @empty
+                                                    
+                        @endforelse                
             </tbody>
         </table>
     </div>
@@ -145,27 +158,26 @@
                 </tr>
             </thead>
             <tbody>
-               {{-- @foreach ($wargas as $item) --}}
-               <tr>
-                {{-- <td>{{$loop->iteration}}</td>
-                <td>{{$item->id}}</td>
-                <td>{{$item->nama}}</td>
-                <td>{{$item->alamat}}</td>
-                <td>{{$item->status}}</td> --}}
-                <td>1</td>
-                <td>010101</td>
-                <td>Iqbaal</td>
-                <td>RT01</td>
-                <td>Menetap</td>
-                <td class="flex gap-3 justify-center">
-                    <a href="opsiPayment">
-                    <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
-                    Bayar
-                    </button>
-                </a>
-                </td>
-            </tr>
-               {{-- @endforeach --}}
+                @forelse ($wargas as $item)
+                <tr>
+                      @if($item->category->name ?? "thr" == "thr")
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->name}}</td>
+                        <td>{{$item->rt . " , " . $item->rw }}</td>
+                        <td>{{$item->status}}</td>
+                        <td class="flex gap-3 justify-center">
+                            <a href="{{ route("payment.detailPayment.warga", ["warga" => $item, "category" => $item->category->name ?? "thr"]) }}">
+                            <button class="flex justify-center rounded-lg bg-blue-500 w-16 h-9 items-center">
+                            Bayar
+                            </button>
+                        </a>
+                        </td>
+                    </tr>
+                      @endif
+                    @empty
+                                                
+                    @endforelse                
             </tbody>
         </table>
     </div>
