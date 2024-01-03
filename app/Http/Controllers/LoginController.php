@@ -28,6 +28,7 @@ class LoginController extends Controller
                 $findUser->email = $user->email;
                 $findUser->noTelp = "";
                 $findUser->role = "";
+                $findUser->rw = "";
                 $findUser->password = Hash::make('12345678');
                 $findUser->save();  
 
@@ -66,6 +67,7 @@ class LoginController extends Controller
         $userId = $prefix . substr($request['name'], 0, 2) . $currentDate . User::count() + 1;
         $user->id = $userId;
         $user->role = $role;
+        $user->rw = $request->rw ?? "";
         $user->noTelp = $request->noTelp;
         $user->save();
         Auth::login($user);

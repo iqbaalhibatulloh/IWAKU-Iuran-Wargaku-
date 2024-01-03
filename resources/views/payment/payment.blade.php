@@ -26,7 +26,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
+                        @forelse ($wargas as $item)
+                            @if($item)
+                        @empty
+                        
+                        @endforelse
+                        <td></td>
                         <td>System Architect</td>
                         <td>Iqbaal Hibatulloh</td>
                         <td>RT05</td>

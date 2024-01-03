@@ -30,6 +30,24 @@
               <option value="RT05">RT 05</option>
           </select>
         </div>
+
+         <!-- Rw -->
+         <div class="mt-4 hidden" id="rw">
+            
+            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RW</label>
+            {{-- <x-input-label for="role" :value="__('Role')" /> --}}
+            <select name="rw" class="dark:bg-white dark:text-black focus:border-indigo-500 dark:focus:border-indigo-600  rounded-md w-full shadow-sm border-2 border-gray-500">
+              <option selected disabled>Role</option>
+              <option value="admin">Admin</option>
+              @for ($i = 1 ; $i <= 21; $i++)
+                            @if ($i >9)
+                            <option value="RW{{$i}}">RW {{$i}}</option>
+                              @else
+                              <option value="RW0{{$i}}">RW 0{{$i}}</option>
+                            @endif
+                            @endfor
+          </select>
+        </div>
               
         <div class="flex items-center justify-end mt-4">
                     
@@ -38,4 +56,20 @@
             </button>
         </div>
     </form>
+    @push('js')
+    <script>
+        $(document).ready(function(){
+            $('#role').change(function(){
+                const role = $(this).val();
+                // check if has word RW                    
+                if(role.includes('RW')){
+                    $('#rw').addClass('hidden');                        
+                    $('select[name="rw"]').val(null);
+                }else{
+                    $('#rw').removeClass('hidden');
+                }
+            });
+        });
+    </script>
+@endpush
 </x-guest-layout>

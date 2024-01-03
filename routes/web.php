@@ -69,7 +69,13 @@ Route::get('/dokumen', function () {
     return view('dokumen');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.doc');
 Route::get('/payment', function () {
-    return view('payment.payment');
+    // check if is RW or RT how because my value is RT02 RT01 RW01 RW02
+    $wargas = Warga::where('rw', auth()->user()->role)->get();
+
+    if(auth()->user()->rw != ""){        
+        $wargas = Warga::where('rw', auth()->user()->rw)->where('role', auth()->user()->role)->get();
+    }
+    return view('payment.payment', $wargas);
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment');
 Route::get('/opsiPayment', function () {
     return view('payment.opsiPayment');

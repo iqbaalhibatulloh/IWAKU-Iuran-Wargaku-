@@ -29,7 +29,7 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
+    {        
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'noTelp' => ['required', 'string'],
@@ -60,6 +60,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'noTelp' => $request->noTelp,
             'role' => $request->role,
+            'rw' => $request->rw ?? "",
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
