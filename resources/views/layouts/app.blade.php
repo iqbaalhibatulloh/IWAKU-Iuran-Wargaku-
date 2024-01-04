@@ -107,11 +107,15 @@
         <script src="https://code.jquery.com/jquery-3.7.0.js "></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
-            new DataTable('#example1');
-            new DataTable('#example2');
-            new DataTable('#example3');
-            new DataTable('#example4');
-        </script>\
+          // loop category
+        @isset($results)
+        @foreach ($results as $index => $item)
+                $(document).ready(function() {
+                    $('#{{ $index }}').DataTable();
+                } );
+            @endforeach      
+        @endisset     
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
         <script>

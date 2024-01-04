@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
+use App\Models\Category;
 use App\Models\Payment;
 use App\Models\Warga;
 use Carbon\Carbon;
@@ -73,46 +74,59 @@ Route::get('/dokumen', function () {
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.doc');
 Route::get('/payment', function () {    
 
-$year = Carbon::now()->year;
+    $year = Carbon::now()->year;
 
-// Get users who have made payments for all twelve months
-$usersWithFullPayments = Payment::whereHas('warga', function ($query) {
-        if (Auth::user()->rw == "") {
-            $query->where('rw', Auth::user()->role);
-        } else {
-            $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
-        }
-    })
-    ->whereYear('payment_date', $year)
-    ->get()
-    ->groupBy('warga_id')
-    ->filter(function ($payments) {     
-        $currentMonthNumber = Carbon::now()->format('n'); 
-        
-        // return $payments->count() >= $currentMonthNumber;
-        return $payments->count() >= 2;
-    })->keys(); 
-
-// Get all users
-$allUsers = Warga::where(function ($query) {
-        if (Auth::user()->rw == "") {
-            $query->where('rw', Auth::user()->role);
-        } else {
-            $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
-        }
-    })
-    ->pluck('id');
-
-// Get users who haven't made payments for all twelve months
-$usersWithoutFullPayments = $allUsers->diff($usersWithFullPayments);
-
-// Retrieve the wargas who haven't made payments for all twelve months
-$wargas = Warga::whereIn('id', $usersWithoutFullPayments)->get();
-
-
+    // Get all categories
+    $categories = Category::all();
     
-    return view('payment.payment', compact("wargas"));
-})->middleware(['auth', 'verified', 'completeRegister'])->name('payment');
+    // Initialize an array to store the results for each category
+    $results = [];
+
+    // Get all users for the current category
+    $allUsers = Warga::where(function ($query) {
+            if (Auth::user()->rw == "") {
+                $query->where('rw', Auth::user()->role);
+            } else {
+                $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+            }
+        })
+        ->pluck('id');
+    
+    foreach ($categories as $category) {
+        // Get users who have made payments for all twelve months and match the current category
+        $usersWithFullPayments = Payment::whereHas('warga', function ($query) {
+                if (Auth::user()->rw == "") {
+                    $query->where('rw', Auth::user()->role);
+                } else {
+                    $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+                }
+            })
+            ->whereYear('payment_date', $year)
+            ->where('category_id', $category->id)
+            ->get()
+            ->groupBy('warga_id')
+            ->filter(function ($payments) {     
+                $currentMonthNumber = Carbon::now()->format('n'); 
+                return $payments->count() >= $currentMonthNumber;
+            })
+            ->keys();
+    
+    
+        // Get users who haven't made payments for all twelve months for the current category
+        $usersWithoutFullPayments = $allUsers->diff($usersWithFullPayments);
+    
+        // Retrieve the wargas who haven't made payments for all twelve months for the current category
+        $wargas = Warga::whereIn('id', $usersWithoutFullPayments)->get();
+    
+        // Store the results for the current category in the array
+        $results[$category->name] = $wargas;
+    }
+    
+    // Now $results contains an array where each key is the category name, and the value is the corresponding wargas.
+    // dd($results);    
+    
+    return view('payment.payment', compact("results", "categories"));
+})->middleware(['auth', 'verified', 'completeRegister'])->name('payment.index');
 Route::get('/opsiPayment', function () {
     return view('payment.opsiPayment');    
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.opsiPayment');

@@ -5,7 +5,7 @@
         </x-nav-link>
     </div>
     <div class="py-3 px-10 ">
-        <x-nav-link :href="route('payment')" :active="request()->routeIs('payment')">
+        <x-nav-link :href="route('payment.index')" :active="Route::is('payment.*')">
             {{ __('Payment') }}
         </x-nav-link>
     </div>
