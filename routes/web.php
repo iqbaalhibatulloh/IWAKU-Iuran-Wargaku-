@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WargaController;
 use App\Models\Category;
@@ -70,6 +71,26 @@ Route::POST('/update', [WargaController::class,"update"]
 
 
 Route::get('/dokumen', function () {
+
+    $currentYear = Carbon::now()->year;
+
+    $monthlyPayments = Payment::join('categories', 'payments.category_id', '=', 'categories.id')
+        ->whereYear('payment_date', $currentYear)
+        ->groupBy(DB::raw('MONTH(payment_date)'))
+        ->selectRaw('MONTH(payment_date) AS month, SUM(categories.price) AS totalAmount')
+        ->pluck('totalAmount', 'month')
+        ->toArray();
+    
+    $data = [];
+    
+    for ($i = 1; $i <= 12; $i++) {
+        $data['labels'][] = date("F", mktime(0, 0, 0, $i, 1));
+        $data['data'][] = $monthlyPayments[$i] ?? 0;
+    }
+    
+    $TotalPricePerMonth = json_encode($data);    
+    dd($TotalPricePerMonth);
+
     return view('dokumen');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.doc');
 Route::get('/payment', function () {    
@@ -127,8 +148,8 @@ Route::get('/payment', function () {
     
     return view('payment.payment', compact("results", "categories"));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.index');
-Route::get('/opsiPayment', function () {
-    return view('payment.opsiPayment');    
+Route::get('/opsiPayment/{warga}', function (Warga $warga) {
+    return view('payment.opsiPayment', compact("warga"));    
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.opsiPayment');
 Route::get('/detailPayment', function () {
     return view('payment.detailPayment');
@@ -167,6 +188,8 @@ Route::get('/detailPayment/{warga}/{category}', function (Warga $warga, $categor
             $paymentStatus["month"][] = $monthNamesId[$month];
     }    
 
+    $category = DB::table('categories')->where('name', $category)->get();
+    // dd($category);
     // dd($paymentStatus);
     
 
@@ -222,6 +245,11 @@ Route::middleware(['auth', 'completeRegister'])->group(function () {
     })->middleware(['auth', 'verified', 'completeRegister'])->name('profile.profileEdit');
     
     Route::resource("/warga", WargaController::class);
+
+    // make payment
+    Route::post("payment/{warga}/{category}", [PaymentController::class, "storePayment"])->name("payment.store");
+    // Delete warga
+    
 });
 
 

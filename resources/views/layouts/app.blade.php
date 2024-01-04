@@ -82,7 +82,7 @@
             <!-- Page Content -->
             <main>
                 <div class="grid grid-cols-4 p-20 gap-x-20 text-white text-2xl">
-                    @if(!\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan', 'profile.profileEdit'))
+                    @if(!\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan', 'profile.profileEdit', 'payment.detailPayment.warga'))
                     <div class="bg-[#8D7B68] max-h-max h-64 text-lg rounded-xl">
                         @include('components.side-bar')
 
@@ -95,7 +95,7 @@
                     
 
                     @endif
-                    <div class="bg-[#8D7B68] px-10 pb-10 {{ !\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan','profile.profileEdit' ) ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
+                    <div class="bg-[#8D7B68] px-10 pb-10 {{ !\Route::is('profile.edit', 'payment.detailPayment', 'payment.opsiPayment', 'memberList.editMemberList', 'document.docPemasukan','profile.profileEdit', 'payment.detailPayment.warga' ) ? "col-span-3" : "col-span-4" }} min-h-max max-h-max grid grid-cols-3 gap-8 rounded-xl py-px shadow-5xl">
                         @yield('content')
                     </div>
                     
@@ -112,12 +112,55 @@
         @foreach ($results as $index => $item)
                 $(document).ready(function() {
                     $('#{{ $index }}').DataTable();
-                } );
+                  } );
+                  
             @endforeach      
-        @endisset     
+            @endisset     
+            $('#example').DataTable();
         </script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+        @if (session('error2'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: '{{ session('error2') }}'
+            })
+        </script>
+    @endif
+    @if (session('success'))
+        <script>
+            const ToastSuccess = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            ToastSuccess.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            })
+        </script>
+    @endif
         <script>
             function togglePassword() {
               var passwordField = document.getElementById("lihat");
@@ -132,5 +175,59 @@
               }
             }
           </script>
+          <script>
+            // Ambil semua tombol hapus
+            const paymentBtn = document.querySelectorAll('.paymeny-button');
+            const deleteBtn = document.querySelectorAll('#delete-btn');
+
+            deleteBtn.forEach(function(button) {
+                
+                button.addEventListener('click', function(e) {
+                    // Tampilkan konfirmasi SweetAlert
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah Anda yakin ingin menghapus?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Hapus!',
+                    }).then((result) => {
+                        // Jika pengguna menekan "Ya", submit form
+                        if (result.isConfirmed) {
+                            // find closest deleteForm
+                            const form = button.parentElement
+                            console.log(form)
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Tambahkan event listener ke setiap tombol hapus
+            paymentBtn.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    // Tampilkan konfirmasi SweetAlert
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah Anda yakin ingin membayar?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Bayar!',
+                    }).then((result) => {
+                        // Jika pengguna menekan "Ya", submit form
+                        if (result.isConfirmed) {
+                            const form = e.target.parentElement;
+                            // console.log(form)
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="mt-7 mx-7 col-span-3 text-center">
-  RW16
+  {{ auth()->user()->rw ? auth()->user()->rw : auth()->user()->role }}
   <h1 class="text-right">
    <!-- Modal toggle -->
 <div class="flex justify-end">

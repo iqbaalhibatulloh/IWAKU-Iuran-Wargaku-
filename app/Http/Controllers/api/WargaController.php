@@ -81,4 +81,20 @@ class WargaController extends Controller
             ], 401);
         }      
     }
+
+    public function show(Warga $warga)
+    {
+        try {
+            return response()->json([
+                'message' => 'Data berhasil ditampilkan',
+                'data' => $warga,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Data gagal ditampilkan',
+                'data' => [],
+                "error" => $e->getMessage(),
+            ], 401);
+        }      
+    }
 }

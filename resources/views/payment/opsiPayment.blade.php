@@ -9,24 +9,24 @@
   {{-- {{$wargas->first()->alamat}} --}}
 </div>
 <div class=" flex col-span-3 relative mx-5 h-48  "> 
-    <a href="detailPayment" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
+    <a href="{{ Route("payment.detailPayment.warga", ["warga" => $warga, "category" => "Bulanan"]) }}" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
         <button type="" method="" >
             Iuran Bulanan 
         </button>
     </a>
-    <a href="detailPayment" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
+    <a href="{{ Route("payment.detailPayment.warga", ["warga" => $warga, "category" => "Ronda"]) }}" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
         <button type="" method="" >
             Iuran Ronda 
         </button>
     </a>
 </div>
 <div class=" flex col-span-3 relative mx-5 mb-7 h-48    "> 
-    <a href="detailPayment" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
+    <a href="{{ Route("payment.detailPayment.warga", ["warga" => $warga, "category" => "Sampah"]) }}" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
         <button type="" method="" >
             Iuran Sampah 
         </button>
     </a>
-    <a href="detailPayment" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
+    <a href="{{ Route("payment.detailPayment.warga", ["warga" => $warga, "category" => "THR"]) }}" class="w-full rounded-xl bg-[#4C3B2A] m-1 py-2 items-center justify-center text-center flex px-2">
         <button type="" method="" >
             Iuran THR 
         </button>

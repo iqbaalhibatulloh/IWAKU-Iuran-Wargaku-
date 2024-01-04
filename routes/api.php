@@ -23,6 +23,7 @@ Route::post('/register', 'App\Http\Controllers\api\LoginController@registerApi')
 
 // warga api
 Route::get('/warga', 'App\Http\Controllers\api\WargaController@index');
+Route::get('/warga/{warga}', 'App\Http\Controllers\api\WargaController@show');
 Route::post('/warga', 'App\Http\Controllers\api\WargaController@store');
 Route::put('/warga/{warga}', 'App\Http\Controllers\api\WargaController@update');
 Route::delete('/warga/{warga}', 'App\Http\Controllers\api\WargaController@destroy');

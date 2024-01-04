@@ -95,6 +95,14 @@ class WargaController extends Controller
      */
     public function destroy(Warga $warga)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $warga->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Warga berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error2', 'Warga gagal dihapus');
+        }
     }
 }

@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Models\Category;
 use App\Models\Payment;
+use App\Models\Warga;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -29,7 +34,29 @@ class PaymentController extends Controller
      */
     public function store(StorePaymentRequest $request)
     {
-        //
+       //
+    }
+
+    public function storePayment(Request $request, Warga $warga, $category){
+        // dd($request->all());
+        // dd(Auth::user()->id);
+        DB::beginTransaction();        
+        try {            
+          
+            Payment::create([
+              "payment_date" => $request->date,
+              'user_id' => auth()->user()->id,
+              'warga_id' => $warga->id,
+              'category_id' => Category::where('name', $category)->first()->id,              
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            dd($th);
+            DB::rollback();
+            return redirect()->back()->with('error2', 'Pembayaran gagal ditambahkan');
+        }
     }
 
     /**
