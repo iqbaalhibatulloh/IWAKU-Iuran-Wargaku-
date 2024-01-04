@@ -12,18 +12,21 @@
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           
           <script>
+            // from php            
+            const chartData = JSON.parse('<?php echo $TotalPricePerMonth; ?>');
+            // console.log(chartData)
             const ctx = document.getElementById('myChart');
           
             new Chart(ctx, {
               type: 'bar',
               data: {
-                labels: ['Iuran bulanan', 'Iuran Sampah', 'Iuran Ronda', 'Iuran THR'],
+                labels: chartData['labels'],
                 datasets: [{
-                  label: '# of Votes',
-                  data: [12, 19, 3, 5],
+                  label: 'Total Pendapatan',
+                  data: chartData['data'],
                   borderWidth: 1
-                }]
-              },
+                }],                
+              },          
               options: {
                 scales: {
                   y: {

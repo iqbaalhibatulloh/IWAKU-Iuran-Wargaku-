@@ -110,7 +110,7 @@
                    @foreach ($wargas as $item)
                    <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$item->id}}</td>
+                    <td>{{ $item->id  }}</td>
                     <td>{{$item->name}}</td>
                     <td>{{$item->rt}}</td>
                     <td>{{$item->rw}}</td>

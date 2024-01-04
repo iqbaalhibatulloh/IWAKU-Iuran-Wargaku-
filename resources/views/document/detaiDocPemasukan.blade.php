@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="col-span-3">
     <div class="mt-7 mx-7 col-span-3 text-center">
         <a class="" href="{{ \route('document.docPemasukan') }}">
             <svg fill="#ffffff" version="1.1" baseProfile="tiny" id="Layer_1" xmlns:x="&amp;ns_extend;" xmlns:i="&amp;ns_ai;" xmlns:graph="&amp;ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" width="30px" height="30px" viewBox="0 0 42 42" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon fill-rule="evenodd" points="31,38.32 13.391,21 31,3.68 28.279,1 8,21.01 28.279,41 "></polygon> </g></svg>
         </a>
-        Pemasukan Iuran Bulanan
+        Pemasukan Iuran {{ $categoryId[0]->name }}
     </div>
     <div class="col-span-3 shadow-2xl rounded-xl mx-7 bg-[#4C3B2A] mt-10 h-max px-2 overflow-y-auto relative mb-7">
         {{-- <div class=" m-2">
@@ -62,90 +63,33 @@
             </div> 
         </div> --}}
         <div class="w-full px-7 my-5 overflow-y-auto text-xl text-center">
-            <table id="example" class="display" style="width:100%" class="">
+            <table id="example1" class="display" style="width:100%" class="">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Besaran</th>
-                        <th>Keterangan</th>
-                        <th>Petugas</th>
-                        <th>Tanggal</th>
+                        <th>Bulan</th>                        
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                        <td>Rp. 56565665</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
+                   @for($i = 0; $i < count($data); $i++)
+                   @if($i == (count($data) - 1))
+                   <tr>
+                    <td>{{$i+1}}</td>
+                    <td>Rp. {{$data[$i][1]}}</td>
+                    <td>{{$data[$i][0]}}</td>
+                    <td>Rp. {{ $totalAmount }}</td>                                                                        
+                </tr>                        
+                   @else
+                   <tr>
+                    <td>{{$i+1}}</td>
+                    <td>Rp. {{$data[$i][1]}}</td>    
+                    <td>{{$data[$i][0]}}</td>
+                    <td></td>                     
+                </tr>  
+                @endif     
+                   @endfor
                     
                 </tbody>
             </table>

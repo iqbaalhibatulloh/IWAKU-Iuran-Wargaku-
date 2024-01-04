@@ -3,9 +3,11 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SpendController;
 use App\Http\Controllers\WargaController;
 use App\Models\Category;
 use App\Models\Payment;
+use App\Models\Spend;
 use App\Models\Warga;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -75,23 +77,27 @@ Route::get('/dokumen', function () {
     $currentYear = Carbon::now()->year;
 
     $monthlyPayments = Payment::join('categories', 'payments.category_id', '=', 'categories.id')
-        ->whereYear('payment_date', $currentYear)
-        ->groupBy(DB::raw('MONTH(payment_date)'))
-        ->selectRaw('MONTH(payment_date) AS month, SUM(categories.price) AS totalAmount')
-        ->pluck('totalAmount', 'month')
-        ->toArray();
+    ->whereYear('payment_date', $currentYear)
+    ->groupBy('category_id') // Include MONTH(payment_date) in GROUP BY
+    ->selectRaw('SUM(categories.price) AS totalAmount')
+    ->pluck('totalAmount')
+    ->toArray();
+
     
     $data = [];
+
+    // labels i want category name  
+    $category = Category::pluck('name')->toArray();    
     
-    for ($i = 1; $i <= 12; $i++) {
-        $data['labels'][] = date("F", mktime(0, 0, 0, $i, 1));
+    for ($i = 0; $i < count($category); $i++) {        
+        $data['labels'][] = $category[$i];
         $data['data'][] = $monthlyPayments[$i] ?? 0;
     }
     
-    $TotalPricePerMonth = json_encode($data);    
-    dd($TotalPricePerMonth);
+    $TotalPricePerMonth = json_encode($data);       
+    // dd($TotalPricePerMonth);
 
-    return view('dokumen');
+    return view('dokumen', compact("TotalPricePerMonth"));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.doc');
 Route::get('/payment', function () {    
 
@@ -202,10 +208,39 @@ Route::get('/docPemasukan', function () {
     return view('document.docPemasukan');
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.docPemasukan');
 Route::get('/docPengeluaran', function () {
-    return view('document.docPengeluaran');
+    $categories = Category::pluck('name','id');
+    $spends = Spend::latest()->get();
+    // dd($categories);
+    return view('document.docPengeluaran', compact("categories", "spends"));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.docPengeluaran');
-Route::get('/detailDocPemasukan', function () {
-    return view('document.detaiDocPemasukan');
+Route::get('/detailDocPemasukan/{category}', function ($category) {
+
+    $currentYear = Carbon::now()->year;
+
+    $categoryId = DB::table('categories')->where('name', $category)->get();    
+
+$monthlyPayments = Payment::join('categories', 'payments.category_id', '=', 'categories.id')
+    // ->whereYear('payment_date', $currentYear)
+    ->where('category_id', $categoryId[0]->id)
+    ->groupBy(DB::raw('MONTH(payment_date)'))
+    ->selectRaw('MONTH(payment_date) AS month, SUM(categories.price) AS totalAmount')
+    ->pluck('totalAmount', 'month')
+    ->toArray();
+
+$data = [];
+$totalAmount = 0;
+for ($i = 1; $i <= 12; $i++) {
+    $data[] = [date("F", mktime(0, 0, 0, $i, 1)), $monthlyPayments[$i] ?? 0];    
+    $totalAmount += $monthlyPayments[$i] ?? 0;
+}
+    // total amount min by spend  where category id sum amount
+    $totalSpend = Spend::where('category_id', $categoryId[0]->id)
+    // ->whereYear('spend_date', $currentYear)
+    ->sum('amount');
+
+    $totalAmount -= $totalSpend;
+// dd(count($data));
+    return view('document.detaiDocPemasukan', compact("data", 'categoryId','totalAmount'));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('document.detailDocPemasukan');
 
 // Route::get('/detailDoc', function () {
@@ -248,7 +283,8 @@ Route::middleware(['auth', 'completeRegister'])->group(function () {
 
     // make payment
     Route::post("payment/{warga}/{category}", [PaymentController::class, "storePayment"])->name("payment.store");
-    // Delete warga
+    // spend to Spend
+    Route::post("spend", [SpendController::class, "storeSpend"])->name("spend.store");
     
 });
 

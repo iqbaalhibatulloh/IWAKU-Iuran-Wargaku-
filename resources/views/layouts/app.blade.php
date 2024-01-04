@@ -117,6 +117,10 @@
             @endforeach      
             @endisset     
             $('#example').DataTable();
+            $('#example1').DataTable({
+                // show 12
+                "pageLength": 12
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
@@ -145,7 +149,7 @@
         <script>
             const ToastSuccess = Swal.mixin({
                 toast: true,
-                position: 'top-end',
+                position: 'top',
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,

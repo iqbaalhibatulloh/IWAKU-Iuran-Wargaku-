@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSpendRequest;
 use App\Http\Requests\UpdateSpendRequest;
 use App\Models\Spend;
+use Illuminate\Http\Request;
 
 class SpendController extends Controller
 {
+
+    public function storeSpend(Request $request)
+    {
+      try{
+        $spend = new Spend();        
+        $spend->user_id = auth()->user()->id;
+        $spend->amount = $request->amount;
+        $spend->category_id = $request->category_id;
+        $spend->spend_date = $request->spend_date;        
+        $spend->save();
+        return redirect()->back()->with('success', 'Spend added successfully');
+      } catch (\Exception $e) {
+        dd($e);
+        return redirect()->back()->with('error2', 'Spend added failed');
+      }
+    }
+
     /**
      * Display a listing of the resource.
      */

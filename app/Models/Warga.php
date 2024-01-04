@@ -10,6 +10,8 @@ class Warga extends Model
     use HasFactory;
 
     protected $table = "wargas";
+    protected $primaryKey = 'id';
+    public $incrementing = false;
 
     protected $guarded = [""];
 

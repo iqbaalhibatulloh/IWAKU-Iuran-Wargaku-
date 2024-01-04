@@ -33,24 +33,24 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <form class="p-4 md:p-5" action="{{route("warga.store")}}" method="POST">
+                        <form action="{{ route("spend.store") }}" method="POST" class="p-4 md:p-5" action="{{route("warga.store")}}" method="POST">
                              @csrf
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-1">
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nominal</label>
-                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nominal" required="">
+                                    <input type="number" name="amount" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nominal" required="">
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
                                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keterangan</label>
-                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Keterangan" required="">
-                                </div>
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Petugas</label>
-                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Petugas" required="">
-                                </div>
-                                <div class="col-span-2 sm:col-span-1">
+                                    <select name="category_id" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        @foreach ($categories as $index => $item)
+                                            <option value="{{ $index }}">{{ $item}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>                                
+                                <div class="col-span-2 sm:col-span-2">
                                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
-                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="05/12/2023" required="">  
+                                    <input type="date" name="spend_date" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="05/12/2023" required="">                                      
                                 </div>
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -73,13 +73,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>RP. 100.000</td>
-                        <td>Pembayaran sampah</td>
-                        <td>Iq</td>
-                        <td>05/12/2023</td>
-                    </tr>
+                   @foreach ($spends as $item)
+                       <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->amount }}</td>
+                            <td>{{ $item->category->name }}</td>
+                            <td>{{ $item->user->name }}</td>                            
+                            <td>{{ \Carbon\Carbon::parse($item->spend_date)->locale('id_ID')->isoFormat('dddd, D MMMM YYYY') }}</td>
+                       </tr>
+                   @endforeach
                     
                 </tbody>
             </table>
