@@ -40,7 +40,68 @@ Route::get("/chooseRole/google", function(){
 Route::put('/updateRole', [LoginController::class, 'updateRole'])->name('updateRole');
 
 Route::get('/home', function () {
-    return view('home');
+
+    $year = Carbon::now()->year;
+
+    // Get all categories
+    $categories = Category::all();
+    
+    // Initialize an array to store the results for each category
+    $results = [];
+
+    // Get all users for the current category
+    $allUsers = Warga::where(function ($query) {
+            if (Auth::user()->rw == "") {
+                $query->where('rw', Auth::user()->role);
+            } else {
+                $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+            }
+        })
+        ->pluck('id');
+    
+    foreach ($categories as $category) {
+        // Get users who have made payments for all twelve months and match the current category
+        $usersWithFullPayments = Payment::whereHas('warga', function ($query) {
+                if (Auth::user()->rw == "") {
+                    $query->where('rw', Auth::user()->role);
+                } else {
+                    $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+                }
+            })
+            ->whereYear('payment_date', $year)
+            ->where('category_id', $category->id)
+            ->get()
+            ->groupBy('warga_id')
+            ->filter(function ($payments) {     
+                $currentMonthNumber = Carbon::now()->format('n'); 
+                return $payments->count() >= $currentMonthNumber;
+            })
+            ->keys();
+    
+    
+        // Get users who haven't made payments for all twelve months for the current category
+        $usersWithoutFullPayments = $allUsers->diff($usersWithFullPayments);
+    
+        // Retrieve the wargas who haven't made payments for all twelve months for the current category
+        $wargas = Warga::whereIn('id', $usersWithoutFullPayments)->get();
+    
+    
+        $udahBayar = Warga::where(function ($query) {
+            if (Auth::user()->rw == "") {
+                $query->where('rw', Auth::user()->role);
+            } else {
+                $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+            }
+        })->whereNotIn('id', $usersWithoutFullPayments)->get();
+    
+        // Store the results for the current category in the array
+        $results[$category->name] = $wargas->count();
+        $wargaUdahBayar[$category->name] = $udahBayar->count();
+    }
+
+    $categories = Category::pluck("name");
+
+    return view('home', compact('results', 'categories', 'wargaUdahBayar'));
 })
 ->middleware(['auth', 'verified', 'completeRegister'])->name('home');
 // Route::get('/payment', function () {
@@ -54,7 +115,13 @@ Route::get('/memberList', function () {
 
     for ($i = 1; $i <= 5; $i++) {
         $rt = 'RT0' . $i;
-        $totalWarga = Warga::where('rt', $rt)->where('rw',auth()->user()->role) ->count();
+        $totalWarga =  Warga::where(function ($query) {
+            if (Auth::user()->rw == "") {
+                $query->where('rw', Auth::user()->role);
+            } else {
+                $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+            }
+        })->count();
         $rtTotals[$rt] = $totalWarga;
     };
 // dd($rtTotals);
@@ -78,20 +145,21 @@ Route::get('/dokumen', function () {
 
     $monthlyPayments = Payment::join('categories', 'payments.category_id', '=', 'categories.id')
     ->whereYear('payment_date', $currentYear)
-    ->groupBy('category_id') // Include MONTH(payment_date) in GROUP BY
-    ->selectRaw('SUM(categories.price) AS totalAmount')
-    ->pluck('totalAmount')
+    ->groupBy('categories.name') // Group by category names instead of category_id
+    ->selectRaw('SUM(categories.price) AS totalAmount, categories.name as categoryName')
+    ->pluck('totalAmount', 'categoryName')
     ->toArray();
 
-    
+
+    // dd($monthlyPayments);
     $data = [];
 
     // labels i want category name  
     $category = Category::pluck('name')->toArray();    
-    
+    // dd($category);
     for ($i = 0; $i < count($category); $i++) {        
         $data['labels'][] = $category[$i];
-        $data['data'][] = $monthlyPayments[$i] ?? 0;
+        $data['data'][] = $monthlyPayments[$category[$i]] ?? 0;
     }
     
     $TotalPricePerMonth = json_encode($data);       
@@ -250,7 +318,13 @@ for ($i = 1; $i <= 12; $i++) {
 // Route::get('/memberlist/rt/{warga:alamat}', [WargaController::class, 'show'])->name("warga.show");
 // Route::get('/memberlist/{rt}/rt', [WargaController::class, 'show'])->name("warga.show.byrt");
 Route::get('/memberlist/{rt}/rt', function(string $rt){
-    $wargas = Warga::where('rt', $rt)->where("rw", auth()->user()->role)->get(); 
+    $wargas = Warga::where(function ($query) {
+        if (Auth::user()->rw == "") {
+            $query->where('rw', Auth::user()->role);
+        } else {
+            $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
+        }
+    })->get();
 // return $rtTotals;
     return view("memberList.detailMemberList", compact("wargas", "rt"));
 })->name("memberList.show.byrt");

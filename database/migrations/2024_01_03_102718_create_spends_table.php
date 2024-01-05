@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();            
             $table->string('user_id', 20);
             $table->double('amount');                        
-            $table->string('category_id')->nullable();                                
+            $table->unsignedBigInteger('category_id')->nullable();                                
             $table->timestamp('spend_date')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('spend_categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

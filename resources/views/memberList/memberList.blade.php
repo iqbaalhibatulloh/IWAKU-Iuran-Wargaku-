@@ -83,14 +83,26 @@
   </h1>
 </div>
 <div class="col-span-3">
-  @for ($i = 1; $i <= 5; $i++)
-  <a href="{{route('memberList.show.byrt', "RT0" . $i)}}" class="block col-span-3 shadow-2xl rounded-xl mb-5 mx-7 bg-[#4C3B2A] text-center py-10">
-      <button>
-        <h2>RT0{{$i}}</h2>
-        <h5 class="text-sm">Total warga: {{$rtTotals["RT0$i"]}}</h5>
-      </button>    
-  </a>
-  @endfor
+  @php
+    $rt =  auth()->user()->rw ? substr(auth()->user()->role, -1) : 5; 
+  @endphp
+ @IF(auth()->user()->rw)
+ <a href="{{route('memberList.show.byrt', "RT0" . $rt)}}" class="block col-span-3 shadow-2xl rounded-xl mb-5 mx-7 bg-[#4C3B2A] text-center py-10">
+  <button>
+    <h2>RT0{{$rt}}</h2>
+    <h5 class="text-sm">Total warga: {{$rtTotals["RT0$rt"]}}</h5>
+  </button>    
+</a>
+ @else
+ @for ($i = 1; $i <= 5; $i++)
+ <a href="{{route('memberList.show.byrt', "RT0" . $i)}}" class="block col-span-3 shadow-2xl rounded-xl mb-5 mx-7 bg-[#4C3B2A] text-center py-10">
+     <button>
+       <h2>RT0{{$i}}</h2>
+       <h5 class="text-sm">Total warga: {{$rtTotals["RT0$i"]}}</h5>
+     </button>    
+ </a>
+ @endfor
+ @endif
 </div>
 
 @endsection

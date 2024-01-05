@@ -21,24 +21,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', 'App\Http\Controllers\api\LoginController@loginApi');
 Route::post('/register', 'App\Http\Controllers\api\LoginController@registerApi');
 
-// warga api
-Route::get('/warga', 'App\Http\Controllers\api\WargaController@index');
-Route::get('/warga/{warga}', 'App\Http\Controllers\api\WargaController@show');
-Route::post('/warga', 'App\Http\Controllers\api\WargaController@store');
-Route::put('/warga/{warga}', 'App\Http\Controllers\api\WargaController@update');
-Route::delete('/warga/{warga}', 'App\Http\Controllers\api\WargaController@destroy');
+Route::middleware("auth:sanctum")->group(function(){
 
-// payment api
-Route::get('/payment', 'App\Http\Controllers\api\PaymentController@index');
-Route::post('/payment', 'App\Http\Controllers\api\PaymentController@store');
-Route::put('/payment/{payment}', 'App\Http\Controllers\api\PaymentController@update');
-Route::delete('/payment/{payment}', 'App\Http\Controllers\api\PaymentController@destroy');
-
-// category api
+    // warga api
+    Route::get('/warga', 'App\Http\Controllers\api\WargaController@index');
+    Route::get('/warga/{warga}', 'App\Http\Controllers\api\WargaController@show');
+    Route::post('/warga', 'App\Http\Controllers\api\WargaController@store');
+    Route::put('/warga/{warga}', 'App\Http\Controllers\api\WargaController@update');
+    Route::delete('/warga/{warga}', 'App\Http\Controllers\api\WargaController@destroy');
+    
+    // payment api
+    Route::get('/payment', 'App\Http\Controllers\api\PaymentController@index');
+    Route::post('/payment', 'App\Http\Controllers\api\PaymentController@store');
+    Route::put('/payment/{payment}', 'App\Http\Controllers\api\PaymentController@update');
+    Route::delete('/payment/{payment}', 'App\Http\Controllers\api\PaymentController@destroy');
+    
+    // category api
 Route::get('/category', 'App\Http\Controllers\api\CategoryController@index');
 Route::post('/category', 'App\Http\Controllers\api\CategoryController@store');
 Route::put('/category/{category}', 'App\Http\Controllers\api\CategoryController@update');
 Route::delete('/category/{category}', 'App\Http\Controllers\api\CategoryController@destroy');
+});
 
 
 
