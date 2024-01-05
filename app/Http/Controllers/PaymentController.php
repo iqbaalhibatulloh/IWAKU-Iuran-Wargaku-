@@ -86,8 +86,16 @@ class PaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Payment $payment)
+    public function destroy(Payment $payment, $category)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $payment->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Payment berhasil dibatalkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error2', 'Payment gagal dibatalkan');
+        }
     }
 }

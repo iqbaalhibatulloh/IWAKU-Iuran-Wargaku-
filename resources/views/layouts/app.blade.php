@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
         {{-- carrosel --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-        
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -182,7 +182,33 @@
           <script>
             // Ambil semua tombol hapus
             const paymentBtn = document.querySelectorAll('.paymeny-button');
+            const deletPaymentBtn = document.querySelectorAll('.delete-payment-button');
             const deleteBtn = document.querySelectorAll('#delete-btn');
+
+            deletPaymentBtn.forEach(function(button) {
+                
+                button.addEventListener('click', function(e) {
+                    // Tampilkan konfirmasi SweetAlert
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah Anda yakin ingin membatalkan pembayaran?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Hapus!',
+                    }).then((result) => {
+                        // Jika pengguna menekan "Ya", submit form
+                        if (result.isConfirmed) {
+                            // find closest deleteForm
+                            const form = button.parentElement
+                            console.log(form)
+                            form.submit();
+                        }
+                    });
+                });
+            });
 
             deleteBtn.forEach(function(button) {
                 
@@ -232,6 +258,10 @@
                     });
                 });
             });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            $('.select2-multiple').select2();
         </script>
     </body>
 </html>

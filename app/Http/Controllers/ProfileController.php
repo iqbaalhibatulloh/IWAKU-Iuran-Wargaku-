@@ -34,18 +34,18 @@ class ProfileController extends Controller
         // if ($request->user()->isDirty('email')) {
         //     $request->user()->email_verified_at = null;
         // }
-        //   dd($request->all(),  key($request->all()),  $request->$uhuy); 
+        //   dd($request->all(),  key($request->all()),  $request->$member); 
 
-     $uhuy = key($request->all());
+     $member = key($request->all());
     
 try{
-    if ($uhuy == 'password') {
+    if ($member == 'password') {
         $request->user()->update([
-            $uhuy =>  Hash::make($request->$uhuy)
+            $member =>  Hash::make($request->$member)
         ]);
     }else{
         $request->user()->update([
-            $uhuy => $request->$uhuy
+            $member => $request->$member
         ]);
     }
 } catch(Exception $e){

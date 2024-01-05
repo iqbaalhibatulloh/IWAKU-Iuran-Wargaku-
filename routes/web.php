@@ -115,9 +115,9 @@ Route::get('/memberList', function () {
 
     for ($i = 1; $i <= 5; $i++) {
         $rt = 'RT0' . $i;
-        $totalWarga =  Warga::where(function ($query) {
+        $totalWarga =  Warga::where(function ($query) use($rt) {
             if (Auth::user()->rw == "") {
-                $query->where('rw', Auth::user()->role);
+                $query->where('rw', Auth::user()->role)->where('rt', $rt);
             } else {
                 $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
             }
@@ -223,7 +223,24 @@ Route::get('/payment', function () {
     return view('payment.payment', compact("results", "categories"));
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.index');
 Route::get('/opsiPayment/{warga}', function (Warga $warga) {
-    return view('payment.opsiPayment', compact("warga"));    
+
+    $monthNames = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember',
+    ];
+
+
+    return view('payment.opsiPayment', compact("warga", "monthNames"));    
 })->middleware(['auth', 'verified', 'completeRegister'])->name('payment.opsiPayment');
 Route::get('/detailPayment', function () {
     return view('payment.detailPayment');
@@ -257,7 +274,8 @@ Route::get('/detailPayment/{warga}/{category}', function (Warga $warga, $categor
             ->where('category_id', $categoryId)
             ->whereYear('payment_date', $year)
             ->whereMonth('payment_date', $month)
-            ->exists() ? 1 : 0;
+            ->first() ?? 0;
+            
 
             $paymentStatus["month"][] = $monthNamesId[$month];
     }    
@@ -318,9 +336,9 @@ for ($i = 1; $i <= 12; $i++) {
 // Route::get('/memberlist/rt/{warga:alamat}', [WargaController::class, 'show'])->name("warga.show");
 // Route::get('/memberlist/{rt}/rt', [WargaController::class, 'show'])->name("warga.show.byrt");
 Route::get('/memberlist/{rt}/rt', function(string $rt){
-    $wargas = Warga::where(function ($query) {
+    $wargas = Warga::where(function ($query) use($rt) {
         if (Auth::user()->rw == "") {
-            $query->where('rw', Auth::user()->role);
+            $query->where('rw', Auth::user()->role)->where('rt', $rt);
         } else {
             $query->where('rt', Auth::user()->role)->where("rw", Auth::user()->rw);
         }
@@ -334,20 +352,20 @@ Route::middleware(['auth', 'completeRegister'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/profileEdit/{uhuy}',  function ($uhuy) {
+    Route::get('/profileEdit/{member}',  function ($member) {
         $type = "";
-        if($uhuy == 'name'){
+        if($member == 'name'){
             $type = 'text';
-        }else if($uhuy == 'email'){
+        }else if($member == 'email'){
             $type = 'email';
-        }else if($uhuy == 'password'){
+        }else if($member == 'password'){
             $type = 'password';
         }else {
             $type = 'tel';
         }
     
         $data = [
-            'name' => $uhuy,
+            'name' => $member,
             'type' => $type
         ];
         return view('profile.profileEdit', $data);
@@ -359,6 +377,7 @@ Route::middleware(['auth', 'completeRegister'])->group(function () {
     Route::post("payment/{warga}/{category}", [PaymentController::class, "storePayment"])->name("payment.store");
     // spend to Spend
     Route::post("spend", [SpendController::class, "storeSpend"])->name("spend.store");
+    Route::delete("payment/{payment}/{category}", [PaymentController::class, "destroy"])->name("payment.delete");
     
 });
 

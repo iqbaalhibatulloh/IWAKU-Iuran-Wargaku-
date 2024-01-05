@@ -57,16 +57,16 @@ class EditMemberListController extends Controller
      */
     public function update(UpdateeditMemberListRequest $request, editMemberList $editMemberList)
     {
-        $uhuy = key($editMemberList->all());
+        $member = key($editMemberList->all());
     
 try{
-    if ($uhuy == 'password') {
+    if ($member == 'password') {
         $editMemberList->user()->update([
-            $uhuy =>  Hash::make($editMemberList->$uhuy)
+            $member =>  Hash::make($editMemberList->$member)
         ]);
     }else{
         $editMemberList->user()->update([
-            $uhuy => $editMemberList->$uhuy
+            $member => $editMemberList->$member
         ]);
     }
 } catch(Exception $e){

@@ -12,10 +12,13 @@
   <div class="w-full shadow-2xl rounded-xl bg-[#4C3B2A] m-1 py-2 justify-center">
       <p class="text-center">{{ $month }}</p>
       <div class="text-center flex justify-center items-center w-full">
-        <form class="payment" action="{{ route("payment.store", ['warga' => $warga, 'category' => $category[0]->name]) }}" method="POST">
+        <form class="payment" action="{{ $paymentStatus['status'][$key] ? route("payment.delete", ['payment' => $paymentStatus['status'][$key]  , 'category' => $category[0]->name]) : route("payment.store", ['warga' => $warga, 'category' => $category[0]->name]) }}" method="POST">
             {{-- DATE IN THIS MONTH INPUT VALUEE --}}
             {{-- month name to date can? --}}
             @csrf
+            @if($paymentStatus['status'][$key])
+            @method("DELETE")
+            @endif
             @php
             // Convert the numeric index to a Carbon instance
             $carbonMonth = \Carbon\Carbon::createFromFormat('n', $key + 1);
@@ -24,7 +27,7 @@
             $firstDayOfMonth = $carbonMonth->startOfMonth()->format('Y-m-d');
         @endphp
              <input class="hidden" type="date" name="date" value="{{ $firstDayOfMonth }}">
-          <button type="submit" method="" class="paymeny-button w-max bg-[#CA8D6E] rounded-xl px-2">
+          <button type="submit" method="" class="{{$paymentStatus['status'][$key] ? "delete-payment-button" : "paymeny-button"}} w-max bg-[#CA8D6E] rounded-xl px-2">
           
             {{-- STATUS INPUT VALUE --}}
             {{ $paymentStatus['status'][$key] ? "Rp. " . $category[0]->price : "Rp. 0" }}
